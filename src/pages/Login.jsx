@@ -16,6 +16,11 @@ export default function Login() {
         e.preventDefault();
         setError('');
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return setError("Please enter a valid email address.");
+        }
+        
         try {
             const url = `${import.meta.env.VITE_API_URL}/guests/login`;
 
