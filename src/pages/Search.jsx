@@ -1,0 +1,129 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+
+export default function Search() {
+    const [checkIn, setCheckIn] = useState('');
+    const [checkOut, setCheckOut] = useState('');
+    const [roomType, setRoomType] = useState('single');
+    const today = new Date().toISOString().split("T")[0];
+
+    const [rooms, setRooms] = useState([]);
+    const [error, setError] = useState('');
+    const [searched, setSearched] = useState(false);
+
+    async function handleSearch(e) {
+        e.preventDefault();
+        setError('');
+
+        if (new Date(checkIn) >= new Date(checkOut)) {
+            return setError("Check-Out date must be after Check-In date.");
+        }
+        try {
+            const url = `${import.meta.env.VITE_API_URL}/rooms/available?checkIn=${checkIn}&checkOut=${checkOut}&roomType=${roomType}`;
+            const response = await axios.get(url);
+
+            setRooms(response.data.rooms);
+            setSearched(true);
+
+        } catch (error) {
+            setError(error.response?.data?.message || "Failed to search rooms. Please try again!");
+        }
+    };
+
+    return (
+        <div className="min-h-screen bg-blue-50 py-10 px-4">
+            <div className="max-w-4xl mx-auto">
+                <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+                    <h2 className="text-2xl font-bold text-blue-900 mb-6 text-center">Find Your Perfect Room</h2>
+
+                    {error && <div className="bg-red-100 text-red-600 p-3 rounded-lg mb-4 text-center">{error}</div>}
+
+                    <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                        <div>
+                            <label className="block text-gray-700 font-medium mb-1">Check-In Date</label>
+                            <input
+                                type="date"
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={checkIn}
+                                onChange={(e) => setCheckIn(e.target.value)}
+                                min={today}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700 font-medium mb-1">Check-Out Date</label>
+                            <input
+                                type="date"
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={checkOut}
+                                onChange={(e) => setCheckOut(e.target.value)}
+                                min={checkIn || today}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-gray-700 font-medium mb-1">Room Type</label>
+                            <select
+                                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={roomType}
+                                onChange={(e) => setRoomType(e.target.value)}
+                            >
+                                <option value="single">Single</option>
+                                <option value="double">Double</option>
+                                <option value="suite">Suite</option>
+                            </select>
+                        </div>
+                        <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition duration-300 shadow-md">
+                            Search Rooms
+                        </button>
+                    </form>
+                </div>
+
+                {searched && (
+                    <div>
+                        <h3 className="text-xl font-bold text-gray-800 mb-4">Available Rooms: {rooms.length}</h3>
+
+                        {rooms.length === 0 ? (
+                            <div className="bg-white p-6 rounded-lg shadow text-center text-gray-500">
+                                Sorry, no rooms available for these dates.
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {rooms.map((room) => (
+                                    <div key={room._id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                                        <div className="p-6">
+                                            <div className="flex justify-between items-start mb-4">
+                                                <h4 className="text-xl font-bold text-blue-900">Room {room.room_number}</h4>
+                                                <span className="bg-green-100 text-green-800 text-sm font-bold px-3 py-1 rounded-full uppercase">
+                                                    {room.room_type}
+                                                </span>
+                                            </div>
+                                            <p className="text-gray-600 mb-4">Enjoy a comfortable stay with all essential amenities included.</p>
+                                            <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
+                                                <span className="text-2xl font-bold text-gray-800">${room.price}<span className="text-sm text-gray-500 font-normal"> / night</span></span>
+
+                                                <Link
+                                                to={`/book/${room._id}`}
+                                                state={{
+                                                    checkIn: checkIn,
+                                                    checkOut: checkOut,
+                                                    roomPrice: room.price
+                                                }}
+                                                className="bg-green-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-600 transition">
+                                                    Book Now
+                                                </Link>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        </div>
+
+    )
+}

@@ -1,19 +1,26 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login.jsx"
 import Register from "./pages/Register.jsx"
+import Home from "./pages/Home.jsx";
+import Search from "./pages/Search.jsx";
+import Booking from "./pages/Booking.jsx";
+import MyBookings from "./pages/MyBookings.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
+import AdminLogin from "./pages/AdminLogin.jsx";
 
 export default function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="register" element={<Register/>} />
-        <Route path="/" element={
-          <div className="flex h-screen flex-col items-center justify-center space-y-4">
-            <h1 className="text-4xl font-bold text-blue-600">Welcome to BirdParadise! 🌴</h1>
-            <p className="text-gray-600">Home page is coming soon...</p>
-          </div>
-        } />
+        <Route path="/register" element={<Register />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/book/:id" element={<Booking />} />
+        <Route path="/my-bookings" element={<MyBookings />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
       </Routes>
     </div>
   );
