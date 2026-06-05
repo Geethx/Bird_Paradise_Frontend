@@ -14,6 +14,8 @@ export default function Booking() {
     const [checkIn, setCheckIn] = useState(location.state?.checkIn || '');
     const [checkOut, setCheckOut] = useState(location.state?.checkOut || '');
     const [price, setPrice] = useState(location.state?.roomPrice || 0);
+    const [image, setImage] = useState(location.state?.roomImage || null);
+
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
@@ -65,14 +67,17 @@ export default function Booking() {
                 {error && <div className="bg-red-100 text-red-600 p-3 rounded-lg mb-4 text-center">{error}</div>}
                 {success && <div className="bg-green-100 text-green-700 p-3 rounded-lg mb-4 text-center font-bold">{success}</div>}
                 <div className="bg-gray-50 p-4 rounded-lg mb-6 border border-gray-200">
+                    {image && (
+                        <img src={image} alt="Room" className="w-full h-48 object-cover rounded-md mb-4 shadow-sm" />
+                    )}
                     <p className="text-gray-700 mb-2"><strong>Room ID:</strong> {id}</p>
                     <p className="text-gray-700 mb-2"><strong>Check-In:</strong> {checkIn || 'Not Selected'}</p>
                     <p className="text-gray-700 mb-2"><strong>Check-Out:</strong> {checkOut || 'Not Selected'}</p>
                     <p className="text-xl text-blue-800 font-bold mt-4">Price: Rs. {price} / night</p>
                 </div>
-                    <button type="button" onClick={handleBooking} className="w-full bg-green-500 text-white font-bold py-4 rounded-lg hover:bg-green-600 transition duration-300 shadow-md text-lg">
-                        Confirm Booking
-                    </button>
+                <button type="button" onClick={handleBooking} className="w-full bg-green-500 text-white font-bold py-4 rounded-lg hover:bg-green-600 transition duration-300 shadow-md text-lg">
+                    Confirm Booking
+                </button>
             </div>
         </div>
     );

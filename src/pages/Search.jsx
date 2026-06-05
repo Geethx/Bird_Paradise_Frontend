@@ -92,6 +92,15 @@ export default function Search() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {rooms.map((room) => (
                                     <div key={room._id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                                        {room.images && room.images.length > 0 ? (
+                                            <img
+                                                src={room.images[0]}
+                                                alt={`Room ${room.room_number}`}
+                                                className="w-full h-56 object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-56 bg-gray-200 flex items-center justify-center text-gray-400 font-medium">No Image Available</div>
+                                        )}
                                         <div className="p-6">
                                             <div className="flex justify-between items-start mb-4">
                                                 <h4 className="text-xl font-bold text-blue-900">Room {room.room_number}</h4>
@@ -104,13 +113,14 @@ export default function Search() {
                                                 <span className="text-2xl font-bold text-gray-800">${room.price}<span className="text-sm text-gray-500 font-normal"> / night</span></span>
 
                                                 <Link
-                                                to={`/book/${room._id}`}
-                                                state={{
-                                                    checkIn: checkIn,
-                                                    checkOut: checkOut,
-                                                    roomPrice: room.price
-                                                }}
-                                                className="bg-green-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-600 transition">
+                                                    to={`/book/${room._id}`}
+                                                    state={{
+                                                        checkIn: checkIn,
+                                                        checkOut: checkOut,
+                                                        roomPrice: room.price,
+                                                        roomImage: room.images && room.images.length > 0 ? room.images[0] : null
+                                                    }}
+                                                    className="bg-green-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-600 transition">
                                                     Book Now
                                                 </Link>
 

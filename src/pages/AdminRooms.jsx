@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 
 export default function AdminRooms() {
@@ -12,6 +14,7 @@ export default function AdminRooms() {
     const [roomNumber, setRoomNumber] = useState('');
     const [roomType, setRoomType] = useState('single')
     const [price, setPrice] = useState('')
+    const [images, setImages] = useState(null);
 
     useEffect(() => {
         if (!user || user.role !== 'admin') {
@@ -40,20 +43,25 @@ export default function AdminRooms() {
         try {
             const url = `${import.meta.env.VITE_API_URL}/rooms`;
 
-            const config = { headers: { Authorization: `Bearer ${token}` } };
+            const config = { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } };
 
-            const newRoomData = {
-                room_number: roomNumber,
-                room_type: roomType,
-                price: Number(price)
-            };
+            const formData = new FormData();
+            formData.append('room_number', roomNumber);
+            formData.append('room_type', roomType);
+            formData.append('price', price);
 
-            await axios.post(url, newRoomData, config);
+            if (images) {
+                for (let i = 0; i < images.length; i++) {
+                    formData.append('images', images[i]);
+                }
+            }
+            await axios.post(url, formData, config);
 
             setRoomNumber('');
             setPrice('');
             setRoomType('single');
-
+            setImages(null);
+            document.getElementById('imageInput').value = "";
             fetchRooms();
         } catch (error) {
             alert(error.response?.data?.message || "Failed to add room");
@@ -112,7 +120,7 @@ export default function AdminRooms() {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-gray-700 font-bold mb-1">Price per Night (Rs.)</label>
+                                <label className="block text-gray-700 font-bold mb-1">Price per Night</label>
                                 <input
                                     type="number"
                                     className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
@@ -122,6 +130,21 @@ export default function AdminRooms() {
                                     required
                                 />
                             </div>
+
+                            <div>
+                                <label className="block text-gray-700 font-bold mb-1">Room Images</label>
+                                <input
+                                    id="imageInput"
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                    onChange={(e) => setImages(e.target.files)}
+                                    className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
+                                    required
+                                />
+                                <p className="text-xs text-gray-500 mt-1">You can select multiple images at once.</p>
+                            </div>
+
                             <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3 rounded hover:bg-blue-700 transition">
                                 Add Room
                             </button>
@@ -133,6 +156,7 @@ export default function AdminRooms() {
                             <table className="w-full text-left">
                                 <thead className="bg-gray-800 text-white">
                                     <tr>
+                                        <th className="p-4">Image</th>
                                         <th className="p-4">Room No</th>
                                         <th className="p-4">Type</th>
                                         <th className="p-4">Price</th>
@@ -146,6 +170,17 @@ export default function AdminRooms() {
                                     ) : (
                                         rooms.map((room) => (
                                             <tr key={room._id} className="border-b hover:bg-gray-50 transition">
+                                                <td className="p-4">
+                                                    {room.images && room.images.length > 0 ? (
+                                                        <img
+                                                            src={room.images[0]}
+                                                            alt={`Room{room.room_number}`}
+                                                            className="w-16 h-16 object-cover rounded"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-400">No Img</div>
+                                                    )}
+                                                </td>
                                                 <td className="p-4 font-bold text-blue-900">{room.room_number}</td>
                                                 <td className="p-4 uppercase text-sm font-semibold text-gray-600">{room.room_type}</td>
                                                 <td className="p-4">Rs. {room.price}</td>

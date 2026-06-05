@@ -1,21 +1,17 @@
-import { useEffect, useState, createContext } from "react";
+import { useState, createContext } from "react";
 
 
 export const AuthContext = createContext();
 
 export function AuthProvider({children}) {
-    const [user, setUser] = useState(null);
-    const [token, setToken] = useState(null);
-
-    useEffect(() => {
+    const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem('user');
-        const savedToken = localStorage.getItem('token');
+        return savedUser ? JSON.parse(savedUser) : null;
+    });
 
-        if (savedUser && savedToken) {
-            setUser(JSON.parse(savedUser));
-            setToken(savedToken);
-        }
-    }, []);
+    const [token, setToken] = useState(() => {
+        return localStorage.getItem('token') || null;
+    });
 
     const login = (userData, jwtToken) => {
         setUser(userData);

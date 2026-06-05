@@ -8,6 +8,7 @@ import MyBookings from "./pages/MyBookings.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import AdminLogin from "./pages/AdminLogin.jsx";
 import AdminRooms from "./pages/AdminRooms.jsx";
+import AdminBookings from "./pages/AdminBookings.jsx";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/my-bookings" element={<MyBookings />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/rooms" element={<AdminRooms />} />
+        <Route path="/admin/bookings" element={<AdminBookings />} />
 
       </Routes>
     </div>
