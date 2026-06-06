@@ -10,7 +10,7 @@ export default function AdminLogin() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const { login } = useContext(AuthContext);
+    const { loginAdmin } = useContext(AuthContext);
     const navigate = useNavigate();
 
     async function handleLogin(e) {
@@ -21,7 +21,7 @@ export default function AdminLogin() {
             const url = `${import.meta.env.VITE_API_URL}/admins/login`;
 
             const response = await axios.post(url, { username: username, password: password });
-            login(response.data.admin, response.data.token);
+            loginAdmin(response.data.admin, response.data.token);
 
             navigate('/admin/dashboard');
 

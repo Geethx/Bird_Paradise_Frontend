@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Navbar from "../components/Navbar";
 
 export default function Search() {
     const [checkIn, setCheckIn] = useState('');
@@ -32,8 +33,9 @@ export default function Search() {
     };
 
     return (
-        <div className="min-h-screen bg-blue-50 py-10 px-4">
-            <div className="max-w-4xl mx-auto">
+        <div className="min-h-screen bg-blue-50">
+            <Navbar />
+            <div className="max-w-4xl mx-auto mt-10">
                 <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
                     <h2 className="text-2xl font-bold text-blue-900 mb-6 text-center">Find Your Perfect Room</h2>
 
@@ -118,6 +120,7 @@ export default function Search() {
                                                         checkIn: checkIn,
                                                         checkOut: checkOut,
                                                         roomPrice: room.price,
+                                                        roomNumber: room.room_number,
                                                         roomImage: room.images && room.images.length > 0 ? room.images[0] : null
                                                     }}
                                                     className="bg-green-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-600 transition">

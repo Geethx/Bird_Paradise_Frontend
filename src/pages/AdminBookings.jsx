@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function AdminBookings() {
-    const { user, token } = useContext(AuthContext);
+    const { admin: user, adminToken: token } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [bookings, setBookings] = useState([]);
@@ -110,7 +110,7 @@ export default function AdminBookings() {
                                         </td>
 
                                         <td className="p-4">
-                                            {booking.booking_status === 'cancelled' || booking.booking_status === 'rejected' ? (
+                                            {booking.booking_status === 'cancelled' || booking.booking_status === 'rejected' || booking.booking_status === 'confirmed' ? (
                                                 <span className="text-gray-400 text-sm italic">No actions needed</span>
                                             ) : (
                                                 <div className="flex gap-2">

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
+import Navbar from "../components/Navbar";
 
 
 
@@ -58,8 +59,9 @@ export default function MyBookings() {
         return <div className="min-h-screen flex items-center justify-center text-xl font-bold text-blue-600">Loading your bookings...</div>;
     }
     return (
-        <div className="min-h-screen bg-gray-50 py-10 px-4">
-            <div className="max-w-4xl mx-auto">
+        <div className="min-h-screen bg-gray-50">
+            <Navbar />
+            <div className="max-w-4xl mx-auto mt-10">
                 <h2 className="text-3xl font-bold text-blue-900 mb-8">My Bookings</h2>
                 {error && <div className="bg-red-100 text-red-600 p-4 rounded-lg mb-6">{error}</div>}
                 {bookings.length === 0 ? (

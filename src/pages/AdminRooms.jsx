@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 export default function AdminRooms() {
-    const { user, token } = useContext(AuthContext);
+    const { admin: user, adminToken: token } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [rooms, setRooms] = useState([]);

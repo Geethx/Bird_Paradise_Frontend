@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export default function AdminDashboard() {
-    const { user, logout } = useContext(AuthContext);
+    const { admin: user, logoutAdmin: logout } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -54,6 +54,22 @@ export default function AdminDashboard() {
                         </div>
                         <h3 className="text-2xl font-bold text-gray-800 mb-2">Manage Bookings</h3>
                         <p className="text-gray-500 text-center">View all customer bookings, confirm, or reject them.</p>
+                    </Link>
+
+                    <Link to="/admin/guests" className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition transform hover:-translate-y-2 p-10 flex flex-col items-center justify-center border-t-8 border-purple-500">
+                        <div className="bg-purple-100 p-6 rounded-full mb-6">
+                            <span className="text-5xl">👥</span>
+                        </div>
+                        <h3 className="text-2xl font-bold text-gray-800 mb-2">View Guests</h3>
+                        <p className="text-gray-500 text-center">See a list of all registered guests in the system.</p>
+                    </Link>
+
+                    <Link to="/admin/reports" className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition transform hover:-translate-y-2 p-10 flex flex-col items-center justify-center border-t-8 border-yellow-500">
+                        <div className="bg-yellow-100 p-6 rounded-full mb-6">
+                            <span className="text-5xl">📈</span>
+                        </div>
+                        <h3 className="text-2xl font-bold text-gray-800 mb-2">System Reports</h3>
+                        <p className="text-gray-500 text-center">View analytics, revenue, and overall statistics.</p>
                     </Link>
                 </div>
             </div>

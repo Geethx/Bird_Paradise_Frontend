@@ -9,6 +9,9 @@ import AdminDashboard from "./pages/AdminDashboard.jsx";
 import AdminLogin from "./pages/AdminLogin.jsx";
 import AdminRooms from "./pages/AdminRooms.jsx";
 import AdminBookings from "./pages/AdminBookings.jsx";
+import AdminGuests from "./pages/AdminGuests.jsx";
+import AdminReports from "./pages/AdminReports.jsx";
+import Rooms from "./pages/Rooms.jsx";
 
 export default function App() {
   return (
@@ -24,6 +27,9 @@ export default function App() {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/rooms" element={<AdminRooms />} />
         <Route path="/admin/bookings" element={<AdminBookings />} />
+        <Route path="/admin/guests" element={<AdminGuests />} />
+        <Route path="/admin/reports" element={<AdminReports />} />
+        <Route path="/rooms" element={<Rooms />} />
 
       </Routes>
     </div>

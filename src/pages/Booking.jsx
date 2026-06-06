@@ -15,6 +15,7 @@ export default function Booking() {
     const [checkOut, setCheckOut] = useState(location.state?.checkOut || '');
     const [price, setPrice] = useState(location.state?.roomPrice || 0);
     const [image, setImage] = useState(location.state?.roomImage || null);
+    const [roomNumber, setRoomNumber] = useState(location.state?.roomNumber || null);
 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -70,10 +71,32 @@ export default function Booking() {
                     {image && (
                         <img src={image} alt="Room" className="w-full h-48 object-cover rounded-md mb-4 shadow-sm" />
                     )}
-                    <p className="text-gray-700 mb-2"><strong>Room ID:</strong> {id}</p>
-                    <p className="text-gray-700 mb-2"><strong>Check-In:</strong> {checkIn || 'Not Selected'}</p>
-                    <p className="text-gray-700 mb-2"><strong>Check-Out:</strong> {checkOut || 'Not Selected'}</p>
-                    <p className="text-xl text-blue-800 font-bold mt-4">Price: Rs. {price} / night</p>
+                    <p className="text-gray-700 mb-2"><strong>Room Number:</strong> {roomNumber || id}</p>
+                    <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                        <div className="flex-1">
+                            <label className="block text-gray-700 font-bold mb-1">Check-In Date</label>
+                            <input 
+                                type="date" 
+                                className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                                value={checkIn}
+                                onChange={(e) => setCheckIn(e.target.value)}
+                                min={new Date().toISOString().split('T')[0]}
+                                required
+                            />
+                        </div>
+                        <div className="flex-1">
+                            <label className="block text-gray-700 font-bold mb-1">Check-Out Date</label>
+                            <input 
+                                type="date" 
+                                className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                                value={checkOut}
+                                onChange={(e) => setCheckOut(e.target.value)}
+                                min={checkIn || new Date().toISOString().split('T')[0]}
+                                required
+                            />
+                        </div>
+                    </div>
+                    <p className="text-xl text-blue-800 font-bold mt-4">Price: $ {price} / night</p>
                 </div>
                 <button type="button" onClick={handleBooking} className="w-full bg-green-500 text-white font-bold py-4 rounded-lg hover:bg-green-600 transition duration-300 shadow-md text-lg">
                     Confirm Booking
