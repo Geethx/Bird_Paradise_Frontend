@@ -50,11 +50,16 @@ export default function Booking() {
         try {
             const url = `${import.meta.env.VITE_API_URL}/bookings`;
 
+            const formatDate = (date) => {
+                if (!date) return '';
+                const d = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+                return d.toISOString().split('T')[0];
+            };
             const data = {
                 room_id: id,
                 guest_id: user._id || user.id,
-                check_in_date: checkInDate ? checkInDate.toISOString().split("T")[0] : '',
-                check_out_date: checkOutDate ? checkOutDate.toISOString().split("T")[0] : ''
+                check_in_date: formatDate(checkInDate),
+                check_out_date: formatDate(checkOutDate)
             };
 
             const config = {
