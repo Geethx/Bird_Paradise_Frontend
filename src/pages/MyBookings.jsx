@@ -11,6 +11,8 @@ export default function MyBookings() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const { user, token } = useContext(AuthContext);
+    const [filterStatus, setFilterStatus] = useState("All");
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -41,7 +43,7 @@ export default function MyBookings() {
 
     async function handleCancel(bookingId) {
         if (!window.confirm("Are you sure you want to cancel this booking?")) return;
-        
+
         try {
             const url = `${import.meta.env.VITE_API_URL}/bookings/${bookingId}/cancel`;
             const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -58,19 +60,40 @@ export default function MyBookings() {
     if (loading) {
         return <div className="min-h-screen flex items-center justify-center text-xl font-bold text-blue-600">Loading your bookings...</div>;
     }
+
+    const filteredBookings = bookings.filter(b => filterStatus === 'All' || b.booking_status === filterStatus);
+
     return (
         <div className="min-h-screen bg-gray-50">
             <Navbar />
             <div className="max-w-4xl mx-auto mt-10">
                 <h2 className="text-3xl font-bold text-blue-900 mb-8">My Bookings</h2>
                 {error && <div className="bg-red-100 text-red-600 p-4 rounded-lg mb-6">{error}</div>}
-                {bookings.length === 0 ? (
+                <div className="mb-6 flex flex-wrap gap-3 justify-center md:justify-start">
+                    {['All', 'pending', 'confirmed', 'cancelled', 'rejected'].map((status) => (
+                        <button
+                            key={status}
+                            onClick={() => setFilterStatus(status)}
+                            className={`px-5 py-2 rounded-full font-bold text-sm transition cursor-pointer capitalize
+                                ${filterStatus === status
+                                    ? 'bg-blue-600 text-white shadow-md transform scale-105'
+                                    : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100 hover:shadow'
+                                }`}
+                        >
+                            {status === 'All' ? 'All Bookings' : status}
+                        </button>
+                    ))}
+                </div>
+                {filteredBookings.length === 0 ? (
                     <div className="bg-white p-8 rounded-xl shadow-md text-center text-gray-500 text-lg">
-                        You have no bookings yet. Go to the Home page to find a room!
+                        {filterStatus === 'All'
+                            ? "You have no bookings yet. Go to the Home page to find a room!"
+                            : `You have no ${filterStatus} bookings to display.`}
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 gap-6">
-                        {bookings.map((booking) => (
+
+                        {filteredBookings.map((booking) => (
                             <div key={booking._id} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500 flex flex-col md:flex-row justify-between items-center hover:shadow-lg transition">
 
                                 <div className="w-full md:w-3/4 mb-4 md:mb-0">

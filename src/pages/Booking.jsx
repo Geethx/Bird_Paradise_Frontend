@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 export default function Booking() {
@@ -11,8 +13,8 @@ export default function Booking() {
 
     const { user, token } = useContext(AuthContext);
 
-    const [checkIn, setCheckIn] = useState(location.state?.checkIn || '');
-    const [checkOut, setCheckOut] = useState(location.state?.checkOut || '');
+    const [checkInDate, setCheckInDate] = useState(location.state?.checkIn ? new Date(location.state.checkIn) : null);
+    const [checkOutDate, setCheckOutDate] = useState(location.state?.checkOut ? new Date(location.state.checkOut) : null);
     const [price, setPrice] = useState(location.state?.roomPrice || 0);
     const [image, setImage] = useState(location.state?.roomImage || null);
     const [roomNumber, setRoomNumber] = useState(location.state?.roomNumber || null);
@@ -26,7 +28,7 @@ export default function Booking() {
         }
     }, [user, navigate]);
 
-    const handleBooking = async (e) => {
+    async function handleBooking(e) {
         e.preventDefault();
         setError('');
         setSuccess('');
@@ -37,8 +39,8 @@ export default function Booking() {
             const data = {
                 room_id: id,
                 guest_id: user._id || user.id,
-                check_in_date: checkIn,
-                check_out_date: checkOut
+                check_in_date: checkInDate ? checkInDate.toISOString().split("T")[0] : '',
+                check_out_date: checkOutDate ? checkOutDate.toISOString().split("T")[0] : ''
             };
 
             const config = {
@@ -60,6 +62,20 @@ export default function Booking() {
         }
     };
 
+    function getDisabledDates() {
+        let dates = [];
+        bookedDates.forEach(booking => {
+            let currentDate = new Date(booking.check_in_date);
+            const endDate = new Date(booking.check_out_date);
+            while (currentDate <= endDate) {
+                dates.push(new Date(currentDate));
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+        });
+        return dates;
+    };
+    const disabledDatesArray = getDisabledDates();
+
     return (
         <div className="min-h-screen bg-blue-50 py-10 px-4 flex items-center justify-center">
             <div className="w-full max-w-lg bg-white rounded-xl shadow-xl p-8">
@@ -75,23 +91,31 @@ export default function Booking() {
                     <div className="flex flex-col sm:flex-row gap-4 mb-4">
                         <div className="flex-1">
                             <label className="block text-gray-700 font-bold mb-1">Check-In Date</label>
-                            <input 
-                                type="date" 
+                            <DatePicker
+                                selected={checkInDate}
+                                onChange={(date) => setCheckInDate(date)}
+                                selectsStart
+                                startDate={checkInDate}
+                                endDate={checkOutDate}
+                                minDate={new Date()}
+                                excludeDates={disabledDatesArray}
                                 className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
-                                value={checkIn}
-                                onChange={(e) => setCheckIn(e.target.value)}
-                                min={new Date().toISOString().split('T')[0]}
+                                placeholderText="Select Check-In Date"
                                 required
                             />
                         </div>
                         <div className="flex-1">
                             <label className="block text-gray-700 font-bold mb-1">Check-Out Date</label>
-                            <input 
-                                type="date" 
+                            <DatePicker
+                                selected={checkOutDate}
+                                onChange={(date) => setCheckOutDate(date)}
+                                selectsEnd
+                                startDate={checkInDate}
+                                endDate={checkOutDate}
+                                minDate={checkInDate || new Date()}
+                                excludeDates={disabledDatesArray}
                                 className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
-                                value={checkOut}
-                                onChange={(e) => setCheckOut(e.target.value)}
-                                min={checkIn || new Date().toISOString().split('T')[0]}
+                                placeholderText="Select Check-Out Date"
                                 required
                             />
                         </div>
