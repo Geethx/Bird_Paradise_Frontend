@@ -67,7 +67,7 @@ export default function Register() {
     return (
         <div className="flex min-h-screen items-center justify-center bg-blue-50 py-10">
             <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-                <h2 className="text-3xl font-bold text-center text-blue-900 mb-6">Create an Account</h2>
+                <h2 className="text-3xl font-bold text-center text-blue-400 mb-6">Create an Account</h2>
                 {error && <div className="bg-red-100 text-red-600 p-3 rounded-lg mb-4 text-center">{error}</div>}
                 {success && <div className="bg-green-100 text-green-700 p-3 rounded-lg mb-4 text-center">{success}</div>}
                 <form onSubmit={handleRegister} className="space-y-4">

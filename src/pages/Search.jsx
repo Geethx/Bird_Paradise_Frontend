@@ -37,7 +37,7 @@ export default function Search() {
             <Navbar />
             <div className="max-w-4xl mx-auto mt-10">
                 <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-                    <h2 className="text-2xl font-bold text-blue-900 mb-6 text-center">Find Your Perfect Room</h2>
+                    <h2 className="text-2xl font-bold text-blue-400 mb-6 text-center">Find Your Perfect Room</h2>
 
                     {error && <div className="bg-red-100 text-red-600 p-3 rounded-lg mb-4 text-center">{error}</div>}
 

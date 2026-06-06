@@ -21,6 +21,20 @@ export default function Booking() {
 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [bookedDates, setBookedDates] = useState([]);
+
+    useEffect(() => {
+        async function fetchBookedDates() {
+            try {
+                const url = `${import.meta.env.VITE_API_URL}/bookings/${id}/booked-dates`;
+                const response = await axios.get(url);
+                setBookedDates(response.data.bookedDates);
+            } catch (error) {
+                setError(error.response?.data?.message || 'Failed to fetch booked dates.');
+            }
+        };
+        fetchBookedDates();
+    }, [id]);
 
     useEffect(() => {
         if (!user) {
@@ -99,6 +113,16 @@ export default function Booking() {
                                 endDate={checkOutDate}
                                 minDate={new Date()}
                                 excludeDates={disabledDatesArray}
+                                dayClassName={(date) =>
+                                    disabledDatesArray.some(
+                                        (d) =>
+                                            d.getDate() === date.getDate() &&
+                                            d.getMonth() === date.getMonth() &&
+                                            d.getFullYear() === date.getFullYear()
+                                    )
+                                        ? "!bg-red-200 !text-red-700 line-through rounded-md"
+                                        : undefined
+                                }
                                 className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
                                 placeholderText="Select Check-In Date"
                                 required
@@ -114,6 +138,16 @@ export default function Booking() {
                                 endDate={checkOutDate}
                                 minDate={checkInDate || new Date()}
                                 excludeDates={disabledDatesArray}
+                                dayClassName={(date) =>
+                                    disabledDatesArray.some(
+                                        (d) =>
+                                            d.getDate() === date.getDate() &&
+                                            d.getMonth() === date.getMonth() &&
+                                            d.getFullYear() === date.getFullYear()
+                                    )
+                                        ? "!bg-red-200 !text-red-700 line-through rounded-md"
+                                        : undefined
+                                }
                                 className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none"
                                 placeholderText="Select Check-Out Date"
                                 required

@@ -1,16 +1,18 @@
 import { Link } from "react-router-dom"
 import Navbar from "../components/Navbar"
+import bgImage from "../assets/bg.jpg"; 
+
 
 export default function Home() {
 
     return (
-        <div className="min-h-screen bg-blue-50">
+        <div className="min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${bgImage})` }}>
             <Navbar />
             <div className="flex flex-col items-center justify-center h-[80vh] text-center px-4">
-                <h2 className="text-5xl font-extrabold text-blue-900 mb-6 drop-shadow-sm">
+                <h2 className="text-5xl font-extrabold text-blue-400 mb-6 drop-shadow-sm">
                     Experience Nature in Comfort
                 </h2>
-                <p className="text-xl text-gray-600 mb-8 max-w-2xl">
+                <p className="text-xl text-gray-600 text-white font-semibold mb-8 max-w-2xl">
                     Welcome to BirdParadise Guest House. Relax, unwind, and enjoy the beautiful surroundings. Book your perfect room today!
                 </p>
 

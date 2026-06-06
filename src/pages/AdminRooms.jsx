@@ -185,12 +185,15 @@ export default function AdminRooms() {
                                                 <td className="p-4 uppercase text-sm font-semibold text-gray-600">{room.room_type}</td>
                                                 <td className="p-4">Rs. {room.price}</td>
                                                 <td className="p-4">
-                                                    {room.availability_status ? (
-                                                        <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-bold">Available</span>
+                                                    {room.is_occupied_today ? (
+                                                        <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-bold shadow-sm">🔴 Occupied</span>
+                                                    ) : room.availability_status ? (
+                                                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold shadow-sm">🟢 Available</span>
                                                     ) : (
-                                                        <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-bold">Booked</span>
+                                                        <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-bold shadow-sm">⚙️ Maintenance</span>
                                                     )}
                                                 </td>
+
                                                 <td className="p-4">
                                                     <button onClick={() => handleDelete(room._id)} className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition text-sm shadow">
                                                         Delete

@@ -54,11 +54,6 @@ export default function Rooms() {
 
                                     <p className="text-xl font-extrabold text-green-600 mb-4">${room.price} <span className="text-sm font-normal text-gray-500">/ night</span></p>
                                     <div className="mt-4 border-t pt-4 flex justify-between items-center">
-                                        {room.availability_status ? (
-                                            <span className="bg-green-100 text-green-800 font-bold px-3 py-1 rounded-full text-sm">🟢 Available</span>
-                                        ) : (
-                                            <span className="bg-red-100 text-red-800 font-bold px-3 py-1 rounded-full text-sm">🔴 Booked</span>
-                                        )}
 
                                         <Link to={`/book/${room._id}`} 
                                         state={{

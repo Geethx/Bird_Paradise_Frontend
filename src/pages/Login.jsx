@@ -36,7 +36,7 @@ export default function Login() {
         <div className="flex h-screen items-center justify-center bg-blue-50">
             <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
 
-                <h2 className="text-3xl font-bold text-center text-blue-900 mb-6">Guest Login</h2>
+                <h2 className="text-3xl font-bold text-center text-blue-400 mb-6">Guest Login</h2>
 
                 {error && <div className="bg-red-100 text-red-600 p-3 rounded-lg mb-4 text-center">{error}</div>}
                 <form onSubmit={handleLogin} className="space-y-4">
