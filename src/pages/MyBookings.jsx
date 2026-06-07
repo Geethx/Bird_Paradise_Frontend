@@ -112,7 +112,12 @@ export default function MyBookings() {
 
                                     <p className="text-gray-600"><strong>Check-In:</strong> {new Date(booking.check_in_date).toLocaleDateString()}</p>
                                     <p className="text-gray-600"><strong>Check-Out:</strong> {new Date(booking.check_out_date).toLocaleDateString()}</p>
-                                    <p className="text-blue-600 font-bold mt-2">Rs. {booking.room_id?.price} / night</p>
+                                    <p className="text-blue-600 font-bold mt-2">$ {booking.room_id?.price} / night</p>
+                                    {booking.total_price && (
+                                        <p className="text-green-700 font-extrabold text-lg mt-1 border-t pt-2 w-max">
+                                            Total: $ {booking.total_price}
+                                        </p>
+                                    )}
                                 </div>
                                 {(booking.booking_status === 'pending' || booking.booking_status === 'confirmed') && (
                                     <button

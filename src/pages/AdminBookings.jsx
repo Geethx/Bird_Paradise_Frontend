@@ -97,6 +97,11 @@ export default function AdminBookings() {
                                         <td className="p-4 text-sm text-gray-700">
                                             <div className="font-semibold text-green-700">In: {new Date(booking.check_in_date).toLocaleDateString()}</div>
                                             <div className="font-semibold text-red-700">Out: {new Date(booking.check_out_date).toLocaleDateString()}</div>
+                                            {booking.total_price && (
+                                                <div className="font-bold text-blue-800 mt-1 pt-1 border-t border-gray-200">
+                                                    Total: $ {booking.total_price}
+                                                </div>
+                                            )}
                                         </td>
                                         <td className="p-4">
                                             <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase

@@ -2,16 +2,24 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 export default function Search() {
-    const [checkIn, setCheckIn] = useState('');
-    const [checkOut, setCheckOut] = useState('');
+    const [checkIn, setCheckIn] = useState(null);
+    const [checkOut, setCheckOut] = useState();
     const [roomType, setRoomType] = useState('single');
-    const today = new Date().toISOString().split("T")[0];
 
     const [rooms, setRooms] = useState([]);
     const [error, setError] = useState('');
     const [searched, setSearched] = useState(false);
+
+    const formatDate = (date) => {
+        if (!date) return '';
+        const d = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+        return d.toISOString().split('T')[0];
+    };
 
     async function handleSearch(e) {
         e.preventDefault();
@@ -21,7 +29,9 @@ export default function Search() {
             return setError("Check-Out date must be after Check-In date.");
         }
         try {
-            const url = `${import.meta.env.VITE_API_URL}/rooms/available?checkIn=${checkIn}&checkOut=${checkOut}&roomType=${roomType}`;
+            const checkInStr = formatDate(checkIn);
+            const checkOutStr = formatDate(checkOut);
+            const url = `${import.meta.env.VITE_API_URL}/rooms/available?checkIn=${checkInStr}&checkOut=${checkOutStr}&roomType=${roomType}`;
             const response = await axios.get(url);
 
             setRooms(response.data.rooms);
@@ -44,25 +54,33 @@ export default function Search() {
                     <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
                         <div>
                             <label className="block text-gray-700 font-medium mb-1">Check-In Date</label>
-                            <input
-                                type="date"
+                            <DatePicker
+                                selected={checkIn}
+                                onChange={(date) => setCheckIn(date)}
+                                selectsStart
+                                startDate={checkIn}
+                                endDate={checkOut}
+                                minDate={new Date()}
                                 className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={checkIn}
-                                onChange={(e) => setCheckIn(e.target.value)}
-                                min={today}
+                                placeholderText="Select Check-In Date"
                                 required
                             />
+
                         </div>
                         <div>
                             <label className="block text-gray-700 font-medium mb-1">Check-Out Date</label>
-                            <input
-                                type="date"
+                            <DatePicker
+                                selected={checkOut}
+                                onChange={(date) => setCheckOut(date)}
+                                selectsEnd
+                                startDate={checkIn}
+                                endDate={checkOut}
+                                minDate={checkIn ? new Date(checkIn.getTime() + 86400000) : new Date(new Date().getTime() + 86400000)}
                                 className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={checkOut}
-                                onChange={(e) => setCheckOut(e.target.value)}
-                                min={checkIn || today}
+                                placeholderText="Select Check-Out Date"
                                 required
                             />
+
                         </div>
                         <div>
                             <label className="block text-gray-700 font-medium mb-1">Room Type</label>
@@ -117,8 +135,8 @@ export default function Search() {
                                                 <Link
                                                     to={`/book/${room._id}`}
                                                     state={{
-                                                        checkIn: checkIn,
-                                                        checkOut: checkOut,
+                                                        checkIn: formatDate(checkIn),
+                                                        checkOut: formatDate(checkOut),
                                                         roomPrice: room.price,
                                                         roomNumber: room.room_number,
                                                         roomImage: room.images && room.images.length > 0 ? room.images[0] : null

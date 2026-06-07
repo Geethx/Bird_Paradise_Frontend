@@ -23,6 +23,11 @@ export default function Booking() {
     const [success, setSuccess] = useState('');
     const [bookedDates, setBookedDates] = useState([]);
 
+    const totalDays = (checkInDate && checkOutDate)
+        ? Math.max(1, Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)))
+        : 0;
+    const totalPrice = totalDays * price;
+
     useEffect(() => {
         async function fetchBookedDates() {
             try {
@@ -59,7 +64,8 @@ export default function Booking() {
                 room_id: id,
                 guest_id: user._id || user.id,
                 check_in_date: formatDate(checkInDate),
-                check_out_date: formatDate(checkOutDate)
+                check_out_date: formatDate(checkOutDate),
+                total_price: totalPrice
             };
 
             const config = {
@@ -141,7 +147,7 @@ export default function Booking() {
                                 selectsEnd
                                 startDate={checkInDate}
                                 endDate={checkOutDate}
-                                minDate={checkInDate || new Date()}
+                                minDate={checkInDate ? new Date(checkInDate.getTime() + 86400000) : new Date(new Date().getTime() + 86400000)}
                                 excludeDates={disabledDatesArray}
                                 dayClassName={(date) =>
                                     disabledDatesArray.some(
@@ -160,6 +166,11 @@ export default function Booking() {
                         </div>
                     </div>
                     <p className="text-xl text-blue-800 font-bold mt-4">Price: $ {price} / night</p>
+                    {totalDays > 0 && (
+                        <p className="text-2xl text-green-700 font-extrabold mt-2 border-t pt-2 border-gray-200">
+                            Total Price: $ {totalPrice} <span className="text-sm text-gray-500 font-bold">({totalDays} Night{totalDays > 1 ? 's' : ''})</span>
+                        </p>
+                    )}
                 </div>
                 <button type="button" onClick={handleBooking} className="w-full bg-green-500 text-white font-bold py-4 rounded-lg hover:bg-green-600 transition duration-300 shadow-md text-lg">
                     Confirm Booking
