@@ -12,6 +12,7 @@ import AdminBookings from "./pages/AdminBookings.jsx";
 import AdminGuests from "./pages/AdminGuests.jsx";
 import AdminReports from "./pages/AdminReports.jsx";
 import Rooms from "./pages/Rooms.jsx";
+import Chatbot from "./components/Chatbot.jsx";
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
         <Route path="/rooms" element={<Rooms />} />
 
       </Routes>
+      <Chatbot />
     </div>
   );
 }
