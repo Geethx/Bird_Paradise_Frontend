@@ -55,14 +55,14 @@ export default function Rooms() {
                                     <p className="text-xl font-extrabold text-green-600 mb-4">${room.price} <span className="text-sm font-normal text-gray-500">/ night</span></p>
                                     <div className="mt-4 border-t pt-4 flex justify-between items-center">
 
-                                        <Link to={`/book/${room._id}`} 
-                                        state={{
-                                            roomImage: room.images && room.images.length > 0 ? room.images[0] : null,
-                                            roomPrice: room.price,
-                                            roomNumber: room.room_number,
-                                            roomId: room._id
-                                        }}
-                                        className="text-blue-600 font-bold hover:underline">
+                                        <Link to={`/book/${room._id}`}
+                                            state={{
+                                                roomImage: room.images && room.images.length > 0 ? room.images[0] : null,
+                                                roomPrice: room.price,
+                                                roomNumber: room.room_number,
+                                                roomId: room._id
+                                            }}
+                                            className="text-blue-600 font-bold hover:underline">
                                             Book Now &rarr;
                                         </Link>
                                     </div>

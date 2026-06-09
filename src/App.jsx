@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/Login.jsx"
 import Register from "./pages/Register.jsx"
 import Home from "./pages/Home.jsx";
@@ -15,6 +15,9 @@ import Rooms from "./pages/Rooms.jsx";
 import Chatbot from "./components/Chatbot.jsx";
 
 export default function App() {
+  const location = useLocation();
+  const isAdminPage = location.pathname.startsWith('/admin');
+  
   return (
     <div className="min-h-screen bg-gray-50">
       <Routes>
@@ -33,7 +36,7 @@ export default function App() {
         <Route path="/rooms" element={<Rooms />} />
 
       </Routes>
-      <Chatbot />
+      {!isAdminPage && <Chatbot />}
     </div>
   );
 }
