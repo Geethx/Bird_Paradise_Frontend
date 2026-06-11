@@ -13,6 +13,7 @@ import AdminGuests from "./pages/AdminGuests.jsx";
 import AdminReports from "./pages/AdminReports.jsx";
 import Rooms from "./pages/Rooms.jsx";
 import Chatbot from "./components/Chatbot.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 export default function App() {
   const location = useLocation();
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="/admin/guests" element={<AdminGuests />} />
         <Route path="/admin/reports" element={<AdminReports />} />
         <Route path="/rooms" element={<Rooms />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       {!isAdminPage && <Chatbot />}
     </div>
