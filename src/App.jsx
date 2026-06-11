@@ -34,7 +34,6 @@ export default function App() {
         <Route path="/admin/guests" element={<AdminGuests />} />
         <Route path="/admin/reports" element={<AdminReports />} />
         <Route path="/rooms" element={<Rooms />} />
-
       </Routes>
       {!isAdminPage && <Chatbot />}
     </div>
