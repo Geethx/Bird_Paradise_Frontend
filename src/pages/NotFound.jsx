@@ -10,7 +10,7 @@ export default function NotFound() {
                 <div className="bg-blue-100 px-2 text-sm rounded absolute">
                     Page Not Found
                 </div>
-                <p className="text-2xl text-gray-800 font-semibold mt-8 mb-4">
+                <p className="text-2xl text-gray-800 font-semibold mt-20 mb-4">
                     Oops! You've lost your way in the paradise.
                 </p>
                 <p className="text-gray-500 mb-8 max-w-md">
